@@ -1,0 +1,20 @@
+
+.footer .p-menubar{
+  background: #043142;
+}
+.footer .p-menubar-root-list{
+  width: 100%;
+}
+.footer .p-menuitem{
+  width: 100%;
+}
+.footer .p-menuitem-link .p-menuitem-text{
+  text-align: center;
+  display: block;
+  margin: auto;
+  color: rgb(170, 253, 253) !important;
+}
+.footer .p-menubar-end{
+  color: rgb(170, 253, 253) !important;
+  white-space: nowrap;
+}
