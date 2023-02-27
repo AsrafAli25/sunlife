@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { RadioButton } from "primereact/radiobutton";
 import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
+
+// for validation
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const Default = () => {
   const [selectedCity, setSelectedCity] = useState(null);
@@ -19,12 +24,29 @@ const Default = () => {
 
   const [selectedOption, setSelectedOption] = useState("");
 
-
   // states for validation
   const [city, setCity] = useState(null);
-  const [validgender, setValidGender] = useState('');
+  const [validGender, setValidGender] = useState("");
+  const [validMonth, setValidMonth] = useState("");
+  const [validYear, setValidYear] = useState("");
   const [formErrors, setFormErrors] = useState({});
 
+  // schema
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters")
+      .required("Password is required"),
+    gender: Yup.string().required("Gender is required"),
+    country: Yup.string().required("Country is required"),
+  });
+
+  const countryOptions = [
+    { label: "United States", value: "United States" },
+    { label: "Canada", value: "Canada" },
+    { label: "Mexico", value: "Mexico" },
+  ];
 
   const cities = [
     { name: "New York", code: "NY" },
@@ -71,18 +93,23 @@ const Default = () => {
     setSelectedOption(event.target.value);
   };
 
-
   // validation functionality
   const validateForm = () => {
     let errors = {};
     // if (!name) {
     //   errors.name = 'Name is required';
     // }
-    if (!validgender) {
-      errors.validgender = 'Gender is required';
+    if (!validGender) {
+      errors.validGender = "Gender is required";
     }
     if (!city) {
-      errors.city = 'City is required';
+      errors.city = "City is required";
+    }
+    if (!validMonth) {
+      errors.validMonth = "Month is required";
+    }
+    if (!validYear) {
+      errors.validYear = "Year is required";
     }
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -127,7 +154,9 @@ const Default = () => {
                       style={{ width: "80%" }}
                       value={selectedCity}
                     />
-                     {formErrors.city && <p className="p-error">{formErrors.city}</p>}
+                    {formErrors.city && (
+                      <p className="p-error">{formErrors.city}</p>
+                    )}
                   </div>
                 </div>
                 <div className="flex mb-4">
@@ -161,32 +190,44 @@ const Default = () => {
                         </label>
                       </div>
                     </div>
-                      {formErrors.validgender && <p className="p-error">{formErrors.validgender}</p>}
+                    {formErrors.validGender && (
+                      <p className="p-error">{formErrors.validGender}</p>
+                    )}
                   </div>
                 </div>
                 <div className="flex mb-4">
                   <div className="col-6">
                     <p className="primaryText text-xl">Your date of birth:</p>
                   </div>
-                  <div className="col-6">
-                    <Dropdown
-                      value={month}
-                      onChange={(e) => setMonth(e.value)}
-                      options={monthName}
-                      optionLabel="name"
-                      placeholder="Select a Month"
-                      // className="w-full md:w-14rem"
-                      style={{ width: "38%", marginRight: "2%" }}
-                    />
-                    <Dropdown
-                      value={year}
-                      onChange={(e) => setYear(e.value)}
-                      options={yearName}
-                      optionLabel="name"
-                      placeholder="Select a Year"
-                      // className="w-full md:w-14rem"
-                      style={{ width: "38%", marginLeft: "2%" }}
-                    />
+                  <div className="col-6 flex w-5 pr-0">
+                    <div className="w-full">
+                      <Dropdown
+                        value={month}
+                        onChange={(e) => setMonth(e.value)}
+                        options={monthName}
+                        optionLabel="name"
+                        placeholder="Select a Month"
+                        // className="w-full md:w-14rem"
+                        style={{ width: "90%", marginRight: "1%" }}
+                      />
+                      {formErrors.validMonth && (
+                        <p className="p-error">{formErrors.validMonth}</p>
+                      )}
+                    </div>
+                    <div className="w-full">
+                      <Dropdown
+                        value={year}
+                        onChange={(e) => setYear(e.value)}
+                        options={yearName}
+                        optionLabel="name"
+                        placeholder="Select a Year"
+                        // className="w-full md:w-14rem"
+                        style={{ width: "90%", marginLeft: "1%" }}
+                      />
+                      {formErrors.validYear && (
+                        <p className="p-error">{formErrors.validYear}</p>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="flex mb-4">
@@ -419,6 +460,116 @@ const Default = () => {
           />
         </div>
       </form>
+
+      <Formik
+        initialValues={{
+          name: "",
+          email: "",
+          password: "",
+          gender: "",
+          country: null,
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
+          // Handle form submission here
+          console.log("form values", values);
+        }}
+      >
+        {(formik) => (
+          <Form>
+            <div className="p-fluid">
+              <label htmlFor="name">Name</label>
+              <Field
+                name="name"
+                as={InputText}
+                className={
+                  formik.errors.name && formik.touched.name ? "p-invalid" : ""
+                }
+              />
+              <ErrorMessage name="name" />
+            </div>
+
+            <div className="p-fluid">
+              <label htmlFor="email">Email</label>
+              <Field
+                name="email"
+                as={InputText}
+                className={
+                  formik.errors.email && formik.touched.email ? "p-invalid" : ""
+                }
+              />
+              <ErrorMessage name="email" />
+            </div>
+
+            <div className="p-fluid">
+              <label htmlFor="password">Password</label>
+              <Field
+                name="password"
+                as={InputText}
+                type="password"
+                className={
+                  formik.errors.password && formik.touched.password
+                    ? "p-invalid"
+                    : ""
+                }
+              />
+              <ErrorMessage name="password" />
+            </div>
+
+            <div className="p-field-radiobutton">
+              <label>Gender</label>
+              <div className="p-formgroup-inline">
+                <Field
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  as={RadioButton}
+                  className={
+                    formik.errors.gender && formik.touched.gender
+                      ? "p-invalid"
+                      : ""
+                  }
+                />
+                <label htmlFor="gender" className="p-radiobutton-label">
+                  Male
+                </label>
+                <Field
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  as={RadioButton}
+                  className={
+                    formik.errors.gender && formik.touched.gender
+                      ? "p-invalid"
+                      : ""
+                  }
+                />
+                <label htmlFor="gender" className="p-radiobutton-label">
+                  Female
+                </label>
+              </div>
+              <ErrorMessage name="gender" />
+            </div>
+
+            <div className="p-field">
+              <label htmlFor="country">Country</label>
+              <Field
+                name="country"
+                as={Dropdown}
+                options={countryOptions}
+                className={
+                  formik.errors.country && formik.touched.country
+                    ? "p-invalid"
+                    : ""
+                }
+              />
+              <ErrorMessage name="country" />
+            </div>
+
+            <button type="submit">Submit</button>
+          </Form>
+        )}
+      </Formik>
     </>
   );
 };
