@@ -1,15 +1,15 @@
 "use client";
-import React, { useState, useRef } from "react";
 
-// prime react components
-import { Steps } from "primereact/steps";
-import { Toast } from "primereact/toast";
-import { Dropdown } from "primereact/dropdown";
-import { RadioButton } from "primereact/radiobutton";
+import React, { useState } from "react";
+
+// prime react imports
+import { TabView, TabPanel } from "primereact/tabview";
 import { Button } from "primereact/button";
-import styles from "./page.module.css";
+import { RadioButton } from "primereact/radiobutton";
+import { Dropdown } from "primereact/dropdown";
 
 // local component imports
+import Default from "./components/default/page";
 import FirstPolicy from "./components/firstPolicy/page";
 import SecondPolicy from "./components/secondPolicy/page";
 import ThirdPolicy from "./components/thirdPolicy/page";
@@ -17,14 +17,17 @@ import FourthPolicy from "./components/fourthPolicy/page";
 import FifthPolicy from "./components/fifthPolicy/page";
 import SixthPolicy from "./components/sixthPolicy/page";
 import SeventhPolicy from "./components/seventhPolicy/page";
-// import EighthPolicy from "./components/eighthPolicy/page";
 
-import Default from "./components/default/page";
+// validation imports
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
+// translations component imports
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import i18n from "./i18n";
 
+// translation functions
 i18n.init({
   lng: "en",
   fallbackLng: "en",
@@ -35,130 +38,15 @@ i18n.init({
   allLanguages: ["en", "fr", "es"], // set allLanguages option here
 });
 
-export default function Home() {
-  // steps
-  const [stepsVisibility, setStepsVisibility] = useState(true);
+const MultiStepForm = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const toast = useRef(null);
-
-  // for spouse
-  const [spouseMonth, setSpouseMonth] = useState(null);
-  const [spouseYear, setSpouseYear] = useState(null);
-  const [spouseGender, setSpouseGender] = useState("");
-  const [spouseSmoke, setSpouseSmoke] = useState("");
-
   const [language, setLanguage] = useState(i18n.language);
 
-  // for steps
-  const items = [
-    {
-      label: "Your Info",
-      command: (event) => {
-        toast.current.show({
-          severity: "info",
-          summary: "Your Info",
-          // detail: event.item.label,
-          detail: "Thank you for choosing this policy",
-        });
-      },
-    },
-    {
-      label: "Bundled Plan",
-      command: (event) => {
-        toast.current.show({
-          severity: "info",
-          summary: "Bundled Plan",
-          // detail: event.item.label,
-          detail: "Thank you for choosing this policy",
-        });
-      },
-    },
-    {
-      label: "Life Insurance",
-      command: (event) => {
-        toast.current.show({
-          severity: "info",
-          summary: "Life Insurance",
-          // detail: event.item.label,
-          detail: "Thank you for choosing this policy",
-        });
-      },
-    },
-    {
-      label: "Accidental Insurance",
-      command: (event) => {
-        toast.current.show({
-          severity: "info",
-          summary: "Accidental Insurance",
-          // detail: event.item.label,
-          detail: "Thank you for choosing this policy",
-        });
-      },
-    },
-    {
-      label: "Healthcare Insurance",
-      command: (event) => {
-        toast.current.show({
-          severity: "info",
-          summary: "Healthcare Insurance",
-          // detail: event.item.label,
-          detail: "Thank you for choosing this policy",
-        });
-      },
-    },
-    {
-      label: "Illness Insurance",
-      command: (event) => {
-        toast.current.show({
-          severity: "info",
-          summary: "Illness Insurance",
-          // detail: event.item.label,
-          detail: "Thank you for choosing this policy",
-        });
-      },
-    },
-    {
-      label: "Disability Insurance",
-      command: (event) => {
-        toast.current.show({
-          severity: "info",
-          summary: "Disability Insurance",
-          // detail: event.item.label,
-          detail: "Thank you for choosing this policy",
-        });
-      },
-    },
-    {
-      label: "Apply Now",
-      command: (event) => {
-        toast.current.show({
-          severity: "info",
-          summary: "Apply Now",
-          // detail: event.item.label,
-          detail: "Thank you for choosing this policy",
-        });
-      },
-    },
-  ];
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedDropdownOption, setSelectedDropdownOption] = useState(null);
 
-  // prev func
-  const prevFunc = () => {
-    setActiveIndex(activeIndex - 1);
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  // next func
-  const nextFunc = () => {
-    setActiveIndex(activeIndex + 1);
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
+  // for spouse
+  const [spouseVisibility, setspouseVisibility] = useState(false);
 
   const { t } = useTranslation();
 
@@ -167,62 +55,540 @@ export default function Home() {
     setLanguage(lng);
   };
 
+  const nextStep = () => {
+    setActiveIndex(activeIndex + 1);
+  };
+
+  const prevStep = () => {
+    setActiveIndex(activeIndex - 1);
+  };
+
+  const optionList = [
+    { label: "Option 1", value: "option1" },
+    { label: "Option 2", value: "option2" },
+    { label: "Option 3", value: "option3" },
+  ];
+
+  const validationSchema = Yup.object().shape({
+    country: Yup.string().required("Country is required"),
+    gender: Yup.string().required("Gender is required"),
+    month: Yup.string().required("Month is required"),
+    year: Yup.string().required("Year is required"),
+    smoke: Yup.string().required("Select an option"),
+    spouse: Yup.string().required("Spouse is required"),
+    child: Yup.string().required("Select an option"),
+  });
+
+  const countryOptions = [
+    { label: "United States", value: "United States" },
+    { label: "Canada", value: "Canada" },
+    { label: "Mexico", value: "Mexico" },
+  ];
+
+  const monthName = [
+    { label: "January", value: "January" },
+    { label: "February", value: "February" },
+    { label: "March", value: "March" },
+    { label: "April", value: "April" },
+    { label: "May", value: "May" },
+    { label: "June", value: "June" },
+    { label: "July", value: "July" },
+  ];
+
+  const yearName = [
+    { label: 1999, value: 1999 },
+    { label: 1998, value: 1998 },
+    { label: 1997, value: 1997 },
+    { label: 1996, value: 1996 },
+    { label: 1995, value: 1995 },
+    { label: 1994, value: 1994 },
+    { label: 1993, value: 1993 },
+  ];
+
   return (
     <main>
-      <div className="bg-blue-50 pb-8">
-        {/* steps pagination */}
-        {stepsVisibility && (
-          <div className="card mx-8  pt-8">
-            <Toast ref={toast}></Toast>
-            <Steps
-              model={items}
-              activeIndex={activeIndex}
-              onSelect={(e) => setActiveIndex(e.index)}
-              readOnly={false}
-            />
+      <TabView
+        activeIndex={activeIndex}
+        onTabChange={(e) => setActiveIndex(e.index)}
+      >
+        <TabPanel header="Step 1">
+          <div>
+            <h1>Step 1</h1>
+            <Formik
+              initialValues={{
+                country: "",
+                gender: "",
+                month: "",
+                year: "",
+                smoke: "",
+                spouse: "",
+                child: "",
+              }}
+              validationSchema={validationSchema}
+              onSubmit={() => nextStep()}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                formik,
+              }) => (
+                <Form>
+                  {/*  */}
+                  <div className="p-8">
+                    <div class="grid primaryBg">
+                      <div className="col-2 p-8">
+                        <div
+                          className="flex align-items-center justify-content-center secondaryBg"
+                          style={{
+                            width: "70px",
+                            height: "70px",
+                            borderRadius: "50%",
+                          }}
+                        >
+                          <i className="pi pi-user"></i>
+                        </div>
+                      </div>
+                      <div className="col p-6 pl-0">
+                        <div className="wrap">
+                          <h2 className="mb-5">TELL US ABOUT YOURSELF</h2>
+
+                          <div className="flex mb-4">
+                            <div className="col-6">
+                              <p className="primaryText text-xl">
+                                Select your province:
+                              </p>
+                            </div>
+                            <div className="col-6">
+                              <Dropdown
+                                value={values.country}
+                                options={countryOptions}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                placeholder="Select an option"
+                                name="country"
+                                style={{ width: "80%" }}
+                              />
+                              <p className="p-error font-semibold  pt-1">
+                                <ErrorMessage name="country" />
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex mb-4">
+                            <div className="col-6">
+                              <p className="primaryText text-xl">
+                                Your gender:
+                              </p>
+                            </div>
+                            <div className="col-6">
+                              <div className="flex flex-wrap gap-3">
+                                <div className="flex align-items-center">
+                                  <Field
+                                    as={RadioButton}
+                                    inputId="male"
+                                    name="gender"
+                                    value="male"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    checked={values.gender === "male"}
+                                  />
+                                  <label className="ml-2" htmlFor="male">
+                                    Male
+                                  </label>
+                                </div>
+                                <div className="flex align-items-center">
+                                  <Field
+                                    as={RadioButton}
+                                    inputId="female"
+                                    name="gender"
+                                    value="female"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    checked={values.gender === "female"}
+                                  />
+                                  <label className="ml-2" htmlFor="female">
+                                    Female
+                                  </label>
+                                </div>
+                              </div>
+                              <p className="p-error font-semibold  pt-1">
+                                <ErrorMessage name="gender" />
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex mb-4">
+                            <div className="col-6">
+                              <p className="primaryText text-xl">
+                                Your date of birth:
+                              </p>
+                            </div>
+                            <div className="col-6 flex w-5 pr-0">
+                              <div className="w-full">
+                                <Dropdown
+                                  value={values.month}
+                                  options={monthName}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  name="month"
+                                  placeholder="Select a month"
+                                  style={{ width: "90%", marginRight: "1%" }}
+                                />
+                                <p className="p-error font-semibold  pt-1">
+                                  <ErrorMessage name="month" />
+                                </p>
+                              </div>
+                              <div className="w-full">
+                                <Dropdown
+                                  value={values.year}
+                                  options={yearName}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  name="year"
+                                  placeholder="Select a year"
+                                  style={{ width: "90%", marginLeft: "1%" }}
+                                />
+                                <p className="p-error font-semibold  pt-1">
+                                  <ErrorMessage name="year" />
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex mb-4">
+                            <div className="col-6">
+                              <p className="primaryText text-xl">
+                                Do you smoke?
+                              </p>
+                            </div>
+                            <div className="col-6">
+                              <div className="flex flex-wrap gap-3">
+                                <div className="flex align-items-center">
+                                  <Field
+                                    as={RadioButton}
+                                    inputId="yes"
+                                    name="smoke"
+                                    value="yes"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    checked={values.smoke === "yes"}
+                                  />
+                                  <label className="ml-2" htmlFor="yes">
+                                    Yes
+                                  </label>
+                                </div>
+                                <div className="flex align-items-center">
+                                  <Field
+                                    as={RadioButton}
+                                    inputId="no"
+                                    name="smoke"
+                                    value="no"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    checked={values.smoke === "no"}
+                                  />
+                                  <label className="ml-2" htmlFor="no">
+                                    No
+                                  </label>
+                                </div>
+                              </div>
+                              <p className="p-error font-semibold  pt-1">
+                                <ErrorMessage name="smoke" />
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex mb-4">
+                            <div className="col-6">
+                              <p className="primaryText text-xl">
+                                Do you have a spouse?
+                              </p>
+                            </div>
+
+                            <div className="col-6">
+                              <div className="flex flex-wrap gap-3">
+                                <div className="flex align-items-center">
+                                  <Field
+                                    as={RadioButton}
+                                    inputId="yes"
+                                    name="spouse"
+                                    value="yes"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    checked={values.spouse === "yes"}
+                                  />
+                                  <label className="ml-2" htmlFor="yes">
+                                    Yes
+                                  </label>
+                                </div>
+                                <div className="flex align-items-center">
+                                  <Field
+                                    as={RadioButton}
+                                    inputId="no"
+                                    name="spouse"
+                                    value="no"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    checked={values.spouse === "no"}
+                                  />
+                                  <label className="ml-2" htmlFor="no">
+                                    No
+                                  </label>
+                                </div>
+                              </div>
+                              <p className="p-error font-semibold  pt-1">
+                                <ErrorMessage name="spouse" />
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex mb-4">
+                            <div className="col-6">
+                              <p className="primaryText text-xl">
+                                Do you have dependent child(ren)?
+                              </p>
+                            </div>
+
+                            <div className="col-6">
+                              <div className="flex flex-wrap gap-3">
+                                <div className="flex align-items-center">
+                                  <Field
+                                    as={RadioButton}
+                                    inputId="yes"
+                                    name="child"
+                                    value="yes"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    checked={values.child === "yes"}
+                                  />
+                                  <label className="ml-2" htmlFor="yes">
+                                    Yes
+                                  </label>
+                                </div>
+                                <div className="flex align-items-center">
+                                  <Field
+                                    as={RadioButton}
+                                    inputId="no"
+                                    name="child"
+                                    value="no"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    checked={values.child === "no"}
+                                  />
+                                  <label className="ml-2" htmlFor="no">
+                                    No
+                                  </label>
+                                </div>
+                              </div>
+                              <p className="p-error font-semibold  pt-1">
+                                <ErrorMessage name="child" />
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* for spouse */}
+                    {spouseVisibility && (
+                      <div className="grid primaryBg">
+                        <div className="col-2 p-8">
+                          <div
+                            className="flex align-items-center justify-content-center secondaryBg"
+                            style={{
+                              width: "70px",
+                              height: "70px",
+                              borderRadius: "50%",
+                            }}
+                          >
+                            <i className="pi pi-user"></i>
+                          </div>
+                        </div>
+                        <div className="col p-6 pl-0">
+                          <div className="wrap">
+                            <h2 className="mb-5">TELL US ABOUT YOUR SPOUSE</h2>
+
+                            <div className="flex mb-4">
+                              <div className="col-6">
+                                <p className="primaryText text-xl">
+                                  Spouse's gender:
+                                </p>
+                              </div>
+                              <div className="col-6">
+                                <div className="flex flex-wrap gap-3">
+                                  <div className="flex align-items-center">
+                                    <RadioButton
+                                      inputId="ingredient1"
+                                      name="pizza"
+                                      value="Cheese"
+                                      onChange={(e) => setGender(e.value)}
+                                      checked={gender === "Cheese"}
+                                    />
+                                    <label
+                                      htmlFor="ingredient1"
+                                      className="ml-2"
+                                    >
+                                      Male
+                                    </label>
+                                  </div>
+                                  <div className="flex align-items-center">
+                                    <RadioButton
+                                      inputId="ingredient2"
+                                      name="pizza"
+                                      value="Mushroom"
+                                      onChange={(e) => setGender(e.value)}
+                                      checked={gender === "Mushroom"}
+                                    />
+                                    <label
+                                      htmlFor="ingredient2"
+                                      className="ml-2"
+                                    >
+                                      Female
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex mb-4">
+                              <div className="col-6">
+                                <p className="primaryText text-xl">
+                                  Spouse's date of birth:
+                                </p>
+                              </div>
+                              <div className="col-6">
+                                <Dropdown
+                                  value={month}
+                                  onChange={(e) => setMonth(e.value)}
+                                  options={monthName}
+                                  optionLabel="name"
+                                  placeholder="Select a Month"
+                                  style={{ width: "38%", marginRight: "2%" }}
+                                />
+                                <Dropdown
+                                  value={year}
+                                  onChange={(e) => setYear(e.value)}
+                                  options={yearName}
+                                  optionLabel="name"
+                                  placeholder="Select a Year"
+                                  style={{ width: "38%", marginLeft: "2%" }}
+                                />
+                              </div>
+                            </div>
+
+                            <div className="flex mb-4">
+                              <div className="col-6">
+                                <p className="primaryText text-xl">
+                                  Does your spouse smoke?{" "}
+                                </p>
+                              </div>
+                              <div className="col-6">
+                                <div className="flex flex-wrap gap-3">
+                                  <div className="flex align-items-center">
+                                    <RadioButton
+                                      inputId="ingredient1"
+                                      name="pizza"
+                                      value="Cheese"
+                                      onChange={(e) => setSmoke(e.value)}
+                                      checked={smoke === "Cheese"}
+                                    />
+                                    <label
+                                      htmlFor="ingredient1"
+                                      className="ml-2"
+                                    >
+                                      Yes
+                                    </label>
+                                  </div>
+                                  <div className="flex align-items-center">
+                                    <RadioButton
+                                      inputId="ingredient2"
+                                      name="pizza"
+                                      value="Mushroom"
+                                      onChange={(e) => setSmoke(e.value)}
+                                      checked={smoke === "Mushroom"}
+                                    />
+                                    <label
+                                      htmlFor="ingredient2"
+                                      className="ml-2"
+                                    >
+                                      No
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <Button type="button" label="Next" onClick={handleSubmit} />
+                </Form>
+              )}
+            </Formik>
           </div>
-        )}
-        <div>
-
-          {/* steps components */}
-          {stepsVisibility && (
-            <div className="pt-1">
-              {activeIndex === 0 && <Default />}
-              {activeIndex === 1 && <FirstPolicy />}
-              {activeIndex === 2 && <SecondPolicy />}
-              {activeIndex === 3 && <ThirdPolicy />}
-              {activeIndex === 4 && <FourthPolicy />}
-              {activeIndex === 5 && <FifthPolicy />}
-              {activeIndex === 6 && <SixthPolicy />}
-              {activeIndex === 7 && <SeventhPolicy />}
-            </div>
-          )}
-
-          {/* btns */}
-          {stepsVisibility && (
-            <div className="flex justify-content-between align-items-center w-8 mx-auto bg-blue-50 p-0">
-              {/* prev btn */}
-              <div className="card flex justify-content-center">
-                <Button
-                  label="Prev"
-                  onClick={prevFunc}
-                  style={{ display: activeIndex === 0 ? "none" : "" }}
-                />
-              </div>
-
-              {/* next btn */}
-              <div className="card flex justify-content-center ">
-                <Button
-                  style={{ display: activeIndex === 7 ? "none" : "" }}
-                  label="Continue"
-                  onClick={nextFunc}
-                  type='submit'
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+        </TabPanel>
+        <TabPanel header="Step 2">
+          <div>
+            <h1>Step 2</h1>
+            <FirstPolicy />
+            <Button label="Prev" onClick={prevStep} />
+            <Button label="Next" onClick={nextStep} />
+          </div>
+        </TabPanel>
+        <TabPanel header="Step 3">
+          <div>
+            <h1>Step 3</h1>
+            <SecondPolicy />
+            <Button label="Prev" onClick={prevStep} />
+            <Button label="Next" onClick={nextStep} />
+          </div>
+        </TabPanel>
+        <TabPanel header="Step 4">
+          <div>
+            <h1>Step 4</h1>
+            <ThirdPolicy />
+            <Button label="Prev" onClick={prevStep} />
+            <Button label="Next" onClick={nextStep} />
+          </div>
+        </TabPanel>
+        <TabPanel header="Step 5">
+          <div>
+            <h1>Step 5</h1>
+            <FourthPolicy />
+            <Button label="Prev" onClick={prevStep} />
+            <Button label="Next" onClick={nextStep} />
+          </div>
+        </TabPanel>
+        <TabPanel header="Step 6">
+          <div>
+            <h1>Step 6</h1>
+            <FifthPolicy />
+            <Button label="Prev" onClick={prevStep} />
+            <Button label="Next" onClick={nextStep} />
+          </div>
+        </TabPanel>
+        <TabPanel header="Step 7">
+          <div>
+            <h1>Step 7</h1>
+            <SixthPolicy />
+            <Button label="Prev" onClick={prevStep} />
+            <Button label="Next" onClick={nextStep} />
+          </div>
+        </TabPanel>
+        <TabPanel header="Step 8">
+          <div>
+            <h1>Step 8</h1>
+            <SeventhPolicy />
+            <Button label="Prev" onClick={prevStep} />
+            <Button label="Submit" />
+          </div>
+        </TabPanel>
+      </TabView>
 
       {/* demo text */}
       <h1>{t("welcome")}</h1>
@@ -289,19 +655,6 @@ export default function Home() {
 
       <div>
         <nav>
-          {/* <ul>
-          <li>
-            <Link href="/" locale={language}>
-              {t('contact')}
-            </Link>
-          </li>
-          <li>
-            <Link href="/about" locale={language}>
-              {t('about')}
-            </Link>
-          </li>
-        </ul> */}
-          {/* Check if i18n.options.allLanguages is defined before using map() method */}
           {i18n.options.allLanguages && (
             <select
               value={language}
@@ -318,4 +671,6 @@ export default function Home() {
       </div>
     </main>
   );
-}
+};
+
+export default MultiStepForm;

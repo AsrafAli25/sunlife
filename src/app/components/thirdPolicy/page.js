@@ -7,13 +7,21 @@ import { Slider } from "primereact/slider";
 import { InputText } from "primereact/inputtext";
 
 const ThirdPolicy = () => {
-  const [bundle, setBundle] = useState("Single");
   const [value, setValue] = useState(0);
+  const [options, setOptions] = useState([
+    { label: "Single", value: "Single" },
+    {
+      label: "Couple, Member + 1 or Family",
+      value: "Couple, Member + 1 or Family",
+    },
+  ]);
+  const [selectedOption, setSelectedOption] = useState("Single");
 
-  const coverageType = [
-    { name: "Single" },
-    { name: "Couple, Member + 1 or Family" },
-  ];
+  const handleOptionChange = (e) => {
+    setSelectedOption(e.value);
+  };
+
+  console.log("g", selectedOption);
 
   const yourPremium = (value) => {
     return Number(((value * 0.0158) / 100).toFixed(2));
@@ -37,22 +45,13 @@ const ThirdPolicy = () => {
           <div className="col-6 flex pr-0">
             <div className="col-8">
               <Dropdown
-                onChange={(e) => setBundle(e.value)}
-                options={coverageType}
-                optionLabel="name"
-                placeholder="Select coverage type"
-                // className="w-full md:w-14rem"
+                onChange={handleOptionChange}
+                options={options}
                 style={{ width: "80%" }}
-                value={bundle}
+                value={selectedOption}
               />
             </div>
-            <div className="col-4 pr-0">
-              {/* <p className="font-semibold text-right my-2 text-xl">
-                {bundle.name === "Single" && "$86.25"}
-                {bundle.name === "Couple, Member + 1 or Family" &&
-                  "$141.58"}
-              </p> */}
-            </div>
+            <div className="col-4 pr-0"></div>
           </div>
         </div>
         <div className="flex my-4">
@@ -76,16 +75,20 @@ const ThirdPolicy = () => {
             </div>
             <div className="col-3">
               <p className="font-semibold text-right my-2 text-xl">
-                ${/* {value *5000} */}
-                {/* {yourPremium(value * 5000)} */}
-                {bundle.name === "Couple, Member + 1 or Family"? (yourPremium(value * 10000)): (yourPremium(value * 5000))}
+                $
+                {selectedOption === "Couple, Member + 1 or Family"
+                  ? yourPremium(value * 10000)
+                  : yourPremium(value * 5000)}
               </p>
             </div>
           </div>
         </div>
         {/* total */}
         <p className="font-semibold text-right my-2 text-3xl">
-          Total:  ${bundle.name === "Couple, Member + 1 or Family"? (yourPremium(value * 10000)): (yourPremium(value * 5000))}
+          Total: $
+          {selectedOption === "Couple, Member + 1 or Family"
+            ? yourPremium(value * 10000)
+            : yourPremium(value * 5000)}
         </p>
       </Card>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Slider } from "primereact/slider";
 import { InputText } from "primereact/inputtext";
 import { RadioButton } from "primereact/radiobutton";
@@ -17,7 +17,17 @@ const SecondPolicy = () => {
     return Number(((value * 0.0057) / 100).toFixed(2));
   };
 
+  const total = () => {
+    return (
+      yourPremium(value * 5000) +
+      spousePremium(spouseValue * 5000) +
+      (child === "yes" ? 2.6 : 0)
+    ).toFixed(2);
+  };
 
+  useEffect(() => {
+    total();
+  });
   return (
     <div className="card m-8">
       <Card title="TERM LIFE INSURANCE">
@@ -85,48 +95,47 @@ const SecondPolicy = () => {
         </div>
         <div className="flex my-4">
           <div className="col-4">
-            <p className="w-7">Would you like to cover your child(ren)? <br/>
-              <span className="text-sm">(one premium covers all dependent children)</span>
+            <p className="w-7">
+              Would you like to cover your child(ren)? <br />
+              <span className="text-sm">
+                (one premium covers all dependent children)
+              </span>
             </p>
           </div>
           <div className="col-8 flex">
             <div className="col-9 pl-0">
               <div className="card flex justify-content-between align-items-center">
-              <div className="flex flex-wrap gap-8">
-                      <div className="flex align-items-center">
-                        <RadioButton
-                          inputId="ingredient1"
-                          name="pizza"
-                          value="yes"
-                          onChange={(e) => setChild(e.value)}
-                          checked={child === "yes"}
-                        />
-                        <label htmlFor="ingredient1" className="ml-2">
-                          Yes
-                        </label>
-                      </div>
-                      <div className="flex align-items-center">
-                        <RadioButton
-                          inputId="ingredient2"
-                          name="pizza"
-                          value="no"
-                          onChange={(e) => setChild(e.value)}
-                          checked={child === "no"}
-                        />
-                        <label htmlFor="ingredient2" className="ml-2">
-                          No
-                        </label>
-                      </div>
-                    </div>
+                <div className="flex flex-wrap gap-8">
+                  <div className="flex align-items-center">
+                    <RadioButton
+                      inputId="ingredient1"
+                      name="pizza"
+                      value="yes"
+                      onChange={(e) => setChild(e.value)}
+                      checked={child === "yes"}
+                    />
+                    <label htmlFor="ingredient1" className="ml-2">
+                      Yes
+                    </label>
+                  </div>
+                  <div className="flex align-items-center">
+                    <RadioButton
+                      inputId="ingredient2"
+                      name="pizza"
+                      value="no"
+                      onChange={(e) => setChild(e.value)}
+                      checked={child === "no"}
+                    />
+                    <label htmlFor="ingredient2" className="ml-2">
+                      No
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="col-3">
               <p className="font-semibold text-right my-2 text-xl">
-                {
-                  // console.log('c',child)
-                  child==='yes'?  '$2.60': '$0.00'
-                }
-                {/* ${childPremium(childValue * 5000)} */}
+                {child === "yes" ? "$2.60" : "$0.00"}
               </p>
             </div>
           </div>
@@ -134,8 +143,7 @@ const SecondPolicy = () => {
 
         {/* total */}
         <p className="font-semibold text-right my-2 text-3xl">
-          Total: {`${yourPremium(value * 5000) + spousePremium(spouseValue * 5000) }`}
-          {/* {console.log(`"total",${yourPremium(value * 5000) + spousePremium(spouseValue * 5000)}`)} */}
+          Total: ${total()}
         </p>
       </Card>
     </div>

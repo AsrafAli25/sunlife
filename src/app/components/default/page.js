@@ -397,6 +397,7 @@ const Default = () => {
                   <div className="col p-6 pl-0">
                     <div className="wrap">
                       <h2 className="mb-5">TELL US ABOUT YOUR SPOUSE</h2>
+
                       <div className="flex mb-4">
                         <div className="col-6">
                           <p className="primaryText text-xl">
@@ -432,6 +433,7 @@ const Default = () => {
                           </div>
                         </div>
                       </div>
+
                       <div className="flex mb-4">
                         <div className="col-6">
                           <p className="primaryText text-xl">
@@ -459,6 +461,7 @@ const Default = () => {
                           />
                         </div>
                       </div>
+
                       <div className="flex mb-4">
                         <div className="col-6">
                           <p className="primaryText text-xl">
@@ -494,6 +497,7 @@ const Default = () => {
                           </div>
                         </div>
                       </div>
+                      
                     </div>
                   </div>
                 </div>
@@ -501,14 +505,24 @@ const Default = () => {
             </div>
 
             {/* submit button */}
-            <div className="card flex justify-content-center ">
+            {/* <div className="card flex justify-content-center ">
               <Button
                 label="submit"
                 // onClick={goToTop}
                 // style={{ display: !continueBtnVisible ? "none" : "" }}
                 type="submit"
               />
-            </div>
+            </div> */}
+
+            {/* submit button */}
+            {/* <div className="card flex justify-content-center mt-4">
+              <Button
+                label="Next"
+                onClick={goToTop}
+                // style={{ display: !continueBtnVisible ? "none" : "" }}
+                type="submit"
+              />
+            </div> */}
           </Form>
         )}
       </Formik>

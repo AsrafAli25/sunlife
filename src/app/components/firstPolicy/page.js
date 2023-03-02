@@ -5,14 +5,22 @@ import { Card } from "primereact/card";
 import { Dropdown } from "primereact/dropdown";
 
 const FirstPolicy = () => {
-  const [bundle, setBundle] = useState("None");
+  const [options, setOptions] = useState([
+    { label: "None", value: "None" },
+    { label: "Single", value: "Single" },
+    {
+      label: "Couple (or Member + 1 dependent child)",
+      value: "Couple (or Member + 1 dependent child)",
+    },
+    { label: "Family", value: "Family" },
+  ]);
+  const [selectedOption, setSelectedOption] = useState("None"); 
 
-  const coverageType = [
-    { name: "None" },
-    { name: "Single" },
-    { name: "Couple (or Member + 1 dependent child)" },
-    { name: "Family" },
-  ];
+  const handleOptionChange = (e) => {
+    setSelectedOption(e.value);
+  };
+
+  console.log("g", selectedOption);
   return (
     <div className="card m-8">
       <Card title="BUNDLED PLAN">
@@ -30,30 +38,26 @@ const FirstPolicy = () => {
           <div className="col-6 flex pr-0">
             <div className="col-8">
               <Dropdown
-                onChange={(e) => setBundle(e.value)}
-                options={coverageType}
-                optionLabel="name"
-                placeholder="Select coverage type"
-                // className="w-full md:w-14rem"
+                value={selectedOption}
+                options={options}
+                onChange={handleOptionChange}
                 style={{ width: "80%" }}
-                value={bundle}
               />
             </div>
             <div className="col-4 pr-0">
               <p className="font-semibold text-right my-2 text-xl">
-                {bundle.name === "None" && "$0.00"}
-                {bundle.name === "Single" && "$86.25"}
-                {bundle.name === "Couple (or Member + 1 dependent child)" &&
+                {selectedOption === "None" && "$0.00"}
+                {selectedOption === "Single" && "$86.25"}
+                {selectedOption === "Couple (or Member + 1 dependent child)" &&
                   "$141.58"}
-                {bundle.name === "Family" && "$183.41"}
+                {selectedOption === "Family" && "$183.41"}
               </p>
             </div>
           </div>
         </div>
         {/* body */}
-        {bundle.name !== "None" && (
-          bundle.name !== ''&&(
-            <main>
+        {selectedOption !== "None" && selectedOption !== "" && (
+          <main>
             <p className="my-2">
               Monthly premiums include coverage for four products:
             </p>
@@ -90,11 +94,11 @@ const FirstPolicy = () => {
                   $30,000 (
                   {
                     <span>
-                      {bundle.name === "Single" && "Single"}
-                      {bundle.name ===
+                      {selectedOption === "Single" && "Single"}
+                      {selectedOption ===
                         "Couple (or Member + 1 dependent child)" &&
                         "Couple, Member + 1 or Family"}
-                      {bundle.name === "Family" && "Family"}
+                      {selectedOption === "Family" && "Family"}
                     </span>
                   }
                   )
@@ -112,11 +116,11 @@ const FirstPolicy = () => {
                   Option 1 (
                   {
                     <span>
-                      {bundle.name === "Single" && "Single"}
-                      {bundle.name ===
+                      {selectedOption === "Single" && "Single"}
+                      {selectedOption ===
                         "Couple (or Member + 1 dependent child)" &&
                         "Couple or Member + 1"}
-                      {bundle.name === "Family" && "Family"}
+                      {selectedOption === "Family" && "Family"}
                     </span>
                   }
                   )
@@ -128,17 +132,16 @@ const FirstPolicy = () => {
               Bundled Plan to get more of what you want.
             </p>
           </main>
-          )
         )}
         {/* total */}
         <p className="font-semibold text-right my-2 text-3xl">
           Total:
           <span className="font-semibold text-right my-2 text-3xl ml-2">
-            {bundle.name === "None" && "$0.00"}
-            {bundle.name === "Single" && "$86.25"}
-            {bundle.name === "Couple (or Member + 1 dependent child)" &&
+            {selectedOption === "None" && "$0.00"}
+            {selectedOption === "Single" && "$86.25"}
+            {selectedOption === "Couple (or Member + 1 dependent child)" &&
               "$141.58"}
-            {bundle.name === "Family" && "$183.41"}
+            {selectedOption === "Family" && "$183.41"}
           </span>
         </p>
       </Card>
