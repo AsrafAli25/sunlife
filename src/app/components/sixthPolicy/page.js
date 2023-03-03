@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Card } from "primereact/card";
 import { Slider } from "primereact/slider";
 import { InputText } from "primereact/inputtext";
@@ -10,15 +10,28 @@ const SixthPolicy = () => {
   const [spouseValue, setSpouseValue] = useState(0);
   const [child, setChild] = useState("");
 
-  const yourPremium = (value) => {
-    return Number(((value * 0.0158) / 100).toFixed(2));
-  };
+  // const yourPremium = (value) => {
+  //   return Number(((value * 0.0158) / 100).toFixed(2));
+  // };
   const spousePremium = (value) => {
-    return Number(((value * 0.0057) / 100).toFixed(2));
+    return Number(((value * 0.0057) / 10).toFixed(2));
   };
+
+  const total = () => {
+    return (
+      // yourPremium(value * 5000) +
+      spousePremium(spouseValue * 5000) +
+      (child === "yes" ? 6.60 : 0)
+    ).toFixed(2);
+  };
+
+  useEffect(() => {
+    total();
+  });
+
   return (
     <div className="card m-8">
-      <Card title="TERM LIFE INSURANCE">
+      <Card title="LONG-TERM DISABILITY INSURANCE">
         <p className="m-0">
           Create a safety net with this income-style benefit that helps pay
           bills that keep coming even if you have to stop working due to a
@@ -50,12 +63,13 @@ const SixthPolicy = () => {
             </div>
             <div className="col-3">
               <p className="font-semibold text-right my-2 text-xl">
-                ${/* {value *5000} */}
-                {yourPremium(value * 5000)}
+                {/* $ */}
+                {/* {yourPremium(value * 5000)} */}
               </p>
             </div>
           </div>
         </div>
+
         <div className="flex my-4">
           <div className="col-4">
             <p>Coverage amount:</p>
@@ -76,12 +90,13 @@ const SixthPolicy = () => {
               </div>
             </div>
             <div className="col-3">
-              <p className="font-semibold text-right my-2 text-xl">
+              {/* <p className="font-semibold text-right my-2 text-xl">
                 ${spousePremium(spouseValue * 5000)}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
+
         <div className="flex my-4">
           <div className="col-4">
             <p className="w-7">Elimination period:</p>
@@ -94,11 +109,8 @@ const SixthPolicy = () => {
             </div>
             <div className="col-3">
               <p className="font-semibold text-right my-2 text-xl">
-                {
-                  // console.log('c',child)
-                  child === "yes" ? "$2.60" : "$0.00"
-                }
-                {/* ${childPremium(childValue * 5000)} */}
+                {/* {child === "yes" ? "$6.60" : "$0.00"} */}
+                {spousePremium(spouseValue * 5000)}
               </p>
             </div>
           </div>
@@ -144,11 +156,7 @@ const SixthPolicy = () => {
             </div>
             <div className="col-3">
               <p className="font-semibold text-right my-2 text-xl">
-                {
-                  // console.log('c',child)
-                  child === "yes" ? "$2.60" : "$0.00"
-                }
-                {/* ${childPremium(childValue * 5000)} */}
+                {child === "yes" ? "$6.60" : "$0.00"}
               </p>
             </div>
           </div>
@@ -156,9 +164,13 @@ const SixthPolicy = () => {
 
         {/* total */}
         <p className="font-semibold text-right my-2 text-3xl">
-          Total:{" "}
-          {`${yourPremium(value * 5000) + spousePremium(spouseValue * 5000)}`}
-          {/* {console.log(`"total",${yourPremium(value * 5000) + spousePremium(spouseValue * 5000)}`)} */}
+          {/* Total:{" "}
+          {  
+            `${
+              yourPremium(value * 5000)
+             + spousePremium(spouseValue * 5000)
+          }`} */}
+            Total: ${total()}
         </p>
       </Card>
     </div>

@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState,useEffect,useContext } from "react";
 import { Card } from "primereact/card";
 import { Dropdown } from "primereact/dropdown";
+import { NumberContext } from "@/app/NumberContext";
 
 const FirstPolicy = () => {
   const [options, setOptions] = useState([
@@ -14,13 +15,19 @@ const FirstPolicy = () => {
     },
     { label: "Family", value: "Family" },
   ]);
-  const [selectedOption, setSelectedOption] = useState("None"); 
+  const [selectedOption, setSelectedOption] = useState("None");
+
+
+  const { addNumber } = useContext(NumberContext);
+
+  useEffect(() => {
+    addNumber(3);
+  }, []);
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.value);
   };
 
-  console.log("g", selectedOption);
   return (
     <div className="card m-8">
       <Card title="BUNDLED PLAN">
@@ -135,13 +142,13 @@ const FirstPolicy = () => {
         )}
         {/* total */}
         <p className="font-semibold text-right my-2 text-3xl">
-          Total:
+          Total: $
           <span className="font-semibold text-right my-2 text-3xl ml-2">
-            {selectedOption === "None" && "$0.00"}
-            {selectedOption === "Single" && "$86.25"}
+            {selectedOption === "None" && 0.00}
+            {selectedOption === "Single" && 86.25}
             {selectedOption === "Couple (or Member + 1 dependent child)" &&
-              "$141.58"}
-            {selectedOption === "Family" && "$183.41"}
+              141.58}
+            {selectedOption === "Family" && 183.41}
           </span>
         </p>
       </Card>

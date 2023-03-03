@@ -18,6 +18,9 @@ import Footer from './components/footer/page';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 
+import { NumberProvider } from './NumberContext';
+
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -28,14 +31,13 @@ export default function RootLayout({ children }) {
       <head />
       <body>
         <>
-        <I18nextProvider i18n={i18n}>
-
-          <Header/>
-          {children}
-          <Footer/>
-
-
-        </I18nextProvider>
+          <NumberProvider>
+            <I18nextProvider i18n={i18n}>
+              <Header/>
+              {children}
+              <Footer/>
+            </I18nextProvider>
+          </NumberProvider>
         </>
       </body>
     </html>

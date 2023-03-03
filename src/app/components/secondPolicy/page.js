@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import { Slider } from "primereact/slider";
 import { InputText } from "primereact/inputtext";
 import { RadioButton } from "primereact/radiobutton";
 import { Card } from "primereact/card";
+
+import { NumberContext } from "@/app/NumberContext";
+
 
 const SecondPolicy = () => {
   // slider value
   const [value, setValue] = useState(0);
   const [spouseValue, setSpouseValue] = useState(0);
   const [child, setChild] = useState("");
+
+  const { addNumber } = useContext(NumberContext);
+
 
   const yourPremium = (value) => {
     return Number(((value * 0.0158) / 100).toFixed(2));
@@ -27,7 +33,11 @@ const SecondPolicy = () => {
 
   useEffect(() => {
     total();
-  });
+  },[]);
+
+  useEffect(() => {
+    addNumber(2);
+  }, []);
   return (
     <div className="card m-8">
       <Card title="TERM LIFE INSURANCE">

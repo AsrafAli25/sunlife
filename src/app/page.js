@@ -526,7 +526,10 @@ const MultiStepForm = () => {
                       </div>
                     )}
                   </div>
-                  <Button type="button" label="Next" onClick={handleSubmit} />
+                  
+                  <div className="flex justify-content-end mr-8">
+                    <Button type="button" label="Next" onClick={handleSubmit} />                  
+                  </div>
                 </Form>
               )}
             </Formik>
@@ -536,122 +539,138 @@ const MultiStepForm = () => {
           <div>
             <h1>Step 2</h1>
             <FirstPolicy />
-            <Button label="Prev" onClick={prevStep} />
-            <Button label="Next" onClick={nextStep} />
+            <div className="flex mx-8 justify-content-between">
+              <Button label="Prev" onClick={prevStep} />
+              <Button label="Next" onClick={nextStep} />
+            </div>
           </div>
         </TabPanel>
         <TabPanel header="Step 3">
           <div>
             <h1>Step 3</h1>
             <SecondPolicy />
-            <Button label="Prev" onClick={prevStep} />
-            <Button label="Next" onClick={nextStep} />
+            <div className="flex mx-8 justify-content-between">
+              <Button label="Prev" onClick={prevStep} />
+              <Button label="Next" onClick={nextStep} />
+            </div>
           </div>
         </TabPanel>
         <TabPanel header="Step 4">
           <div>
             <h1>Step 4</h1>
             <ThirdPolicy />
-            <Button label="Prev" onClick={prevStep} />
-            <Button label="Next" onClick={nextStep} />
+            <div className="flex mx-8 justify-content-between">
+              <Button label="Prev" onClick={prevStep} />
+              <Button label="Next" onClick={nextStep} />
+            </div>
           </div>
         </TabPanel>
         <TabPanel header="Step 5">
           <div>
             <h1>Step 5</h1>
             <FourthPolicy />
-            <Button label="Prev" onClick={prevStep} />
-            <Button label="Next" onClick={nextStep} />
+            <div className="flex mx-8 justify-content-between">
+              <Button label="Prev" onClick={prevStep} />
+              <Button label="Next" onClick={nextStep} />
+            </div>
           </div>
         </TabPanel>
         <TabPanel header="Step 6">
           <div>
             <h1>Step 6</h1>
             <FifthPolicy />
-            <Button label="Prev" onClick={prevStep} />
-            <Button label="Next" onClick={nextStep} />
+            <div className="flex mx-8 justify-content-between">
+              <Button label="Prev" onClick={prevStep} />
+              <Button label="Next" onClick={nextStep} />
+            </div>
           </div>
         </TabPanel>
         <TabPanel header="Step 7">
           <div>
             <h1>Step 7</h1>
             <SixthPolicy />
-            <Button label="Prev" onClick={prevStep} />
-            <Button label="Next" onClick={nextStep} />
+            <div className="flex mx-8 justify-content-between">
+              <Button label="Prev" onClick={prevStep} />
+              <Button label="Next" onClick={nextStep} />
+            </div>
           </div>
         </TabPanel>
         <TabPanel header="Step 8">
           <div>
             <h1>Step 8</h1>
             <SeventhPolicy />
-            <Button label="Prev" onClick={prevStep} />
-            <Button label="Submit" />
+            <div className="flex mx-8 justify-content-between">
+              <Button label="Prev" onClick={prevStep} />
+              {/* <Button label="Submit" /> */}
+            </div>
           </div>
         </TabPanel>
       </TabView>
 
       {/* demo text */}
-      <h1>{t("welcome")}</h1>
-      <h1>{t("about")}</h1>
-      <h1>{t("contact")}</h1>
 
-      <p className="m-8">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, numquam
-        vel facere minima aliquam, iste vitae expedita quam voluptatum aut magni
-        enim reiciendis sapiente incidunt impedit ullam harum. Doloribus
-        repellendus cupiditate ipsum sapiente sequi exercitationem facilis velit
-        cumque non minima nemo, sint veniam soluta illo molestiae incidunt.
-        Fugiat ad, cumque consequuntur obcaecati a nesciunt optio animi tenetur,
-        quos sequi dolores amet iste officiis repudiandae aliquid ipsam sed at
-        quia! Dignissimos ex inventore sint ratione earum veniam in? Incidunt
-        quas dolores at, recusandae culpa, quisquam neque facilis sint id in
-        dolorum est a dolor excepturi? Alias possimus explicabo ducimus odio
-        vitae eaque. Maiores, accusamus odio? Nemo obcaecati totam ea minus
-        nostrum, aperiam nam sequi porro harum quia explicabo autem consequatur
-        magnam necessitatibus enim, est velit hic deleniti earum, numquam
-        facilis voluptatum sint voluptatem. Praesentium eligendi eaque nisi,
-        dolor aliquam sequi voluptates ut enim asperiores eveniet possimus
-        cumque assumenda facere delectus, blanditiis voluptatem dolores
-        accusamus beatae ad aspernatur sed error vero omnis. Eius labore animi
-        sapiente aperiam, asperiores voluptatibus ducimus neque eaque modi
-        placeat, minus enim voluptatum. Est ut quasi quis architecto nesciunt
-        repellendus enim laboriosam voluptates. Sint reprehenderit vitae rem
-        alias asperiores. Nulla repellat ea itaque exercitationem deserunt
-        provident cupiditate asperiores, assumenda doloribus cumque corrupti,
-        autem in voluptates vero aliquam, dolorum ipsa veniam! Repudiandae
-        beatae dolor fugit eaque ipsum voluptatem, consectetur quis! Repellat
-        sint nostrum debitis. Obcaecati nostrum magnam quos ratione odit,
-        temporibus ipsum quam quia mollitia quis quasi quo eligendi
-        necessitatibus saepe praesentium blanditiis quae impedit dolorem
-        similique. Adipisci illo repellendus natus suscipit, nobis nostrum
-        consequatur minus ab quos soluta. Accusantium nihil pariatur tempore.
-        Nulla repellat modi officiis voluptatibus molestiae quisquam illum
-        blanditiis autem esse laborum! Illo possimus aliquam maxime ipsa iusto
-        itaque officia dicta ullam, ducimus cupiditate iste magnam modi
-        recusandae adipisci ipsam beatae aspernatur eaque praesentium, velit
-        culpa, sunt ad qui temporibus. Quo delectus beatae neque dicta qui
-        facere id minus doloremque earum? Laborum et aliquid ut animi vel sequi
-        doloremque ad perferendis, quod cupiditate a. Voluptatem ipsam placeat
-        distinctio reprehenderit illum est aperiam provident? Cumque placeat
-        quasi vel illo assumenda maiores repellat magnam, omnis tempore nemo
-        perspiciatis esse ad totam illum praesentium numquam quam dolorum ea
-        eligendi. Ducimus, magnam accusantium aut natus sit beatae
-        necessitatibus accusamus deserunt temporibus assumenda iusto autem
-        placeat minima, facere iure doloribus ex quod nesciunt. Dolorem
-        accusamus, fugit repellendus, nostrum, fuga architecto obcaecati
-        asperiores ab nam iure delectus impedit. Recusandae, dicta minus
-        incidunt excepturi aut omnis? Fugit, saepe, fuga enim nihil quisquam
-        tempora tempore repellendus, vitae voluptas id molestias illo. Tempore
-        inventore quae, blanditiis, cumque odio optio eum ea ut iusto autem
-        doloribus officiis, voluptates fugit amet nemo libero accusantium a. Est
-        laudantium officiis, porro molestias, velit ipsam repellat deleniti
-        aliquid nisi facilis aspernatur. Eligendi eum deserunt laboriosam maxime
-        ex nostrum delectus inventore fugiat dicta! Itaque officia ducimus velit
-        consectetur similique nesciunt aspernatur iure in perferendis labore
-        aliquam suscipit maxime placeat molestiae ea natus animi odio,
-        praesentium reprehenderit nam nihil tempora! Consectetur totam doloribus
-        eligendi cum suscipit perferendis sit odit exercitationem quas beatae.
-      </p>
+      <div className="m-8">
+        <h1>{t("welcome")}</h1>
+        <h1>{t("about")}</h1>
+        <h1>{t("contact")}</h1>
+        <p className="text-xl line-height-3">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, numquam
+            vel facere minima aliquam, iste vitae expedita quam voluptatum aut magni
+            enim reiciendis sapiente incidunt impedit ullam harum. Doloribus
+            repellendus cupiditate ipsum sapiente sequi exercitationem facilis velit
+            cumque non minima nemo, sint veniam soluta illo molestiae incidunt.
+            Fugiat ad, cumque consequuntur obcaecati a nesciunt optio animi tenetur,
+            quos sequi dolores amet iste officiis repudiandae aliquid ipsam sed at
+            quia! Dignissimos ex inventore sint ratione earum veniam in? Incidunt
+            quas dolores at, recusandae culpa, quisquam neque facilis sint id in
+            dolorum est a dolor excepturi? Alias possimus explicabo ducimus odio
+            vitae eaque. Maiores, accusamus odio? Nemo obcaecati totam ea minus
+            nostrum, aperiam nam sequi porro harum quia explicabo autem consequatur
+            magnam necessitatibus enim, est velit hic deleniti earum, numquam
+            facilis voluptatum sint voluptatem. Praesentium eligendi eaque nisi,
+            dolor aliquam sequi voluptates ut enim asperiores eveniet possimus
+            cumque assumenda facere delectus, blanditiis voluptatem dolores
+            accusamus beatae ad aspernatur sed error vero omnis. Eius labore animi
+            sapiente aperiam, asperiores voluptatibus ducimus neque eaque modi
+            placeat, minus enim voluptatum. Est ut quasi quis architecto nesciunt
+            repellendus enim laboriosam voluptates. Sint reprehenderit vitae rem
+            alias asperiores. Nulla repellat ea itaque exercitationem deserunt
+            provident cupiditate asperiores, assumenda doloribus cumque corrupti,
+            autem in voluptates vero aliquam, dolorum ipsa veniam! Repudiandae
+            beatae dolor fugit eaque ipsum voluptatem, consectetur quis! Repellat
+            sint nostrum debitis. Obcaecati nostrum magnam quos ratione odit,
+            temporibus ipsum quam quia mollitia quis quasi quo eligendi
+            necessitatibus saepe praesentium blanditiis quae impedit dolorem
+            similique. Adipisci illo repellendus natus suscipit, nobis nostrum
+            consequatur minus ab quos soluta. Accusantium nihil pariatur tempore.
+            Nulla repellat modi officiis voluptatibus molestiae quisquam illum
+            blanditiis autem esse laborum! Illo possimus aliquam maxime ipsa iusto
+            itaque officia dicta ullam, ducimus cupiditate iste magnam modi
+            recusandae adipisci ipsam beatae aspernatur eaque praesentium, velit
+            culpa, sunt ad qui temporibus. Quo delectus beatae neque dicta qui
+            facere id minus doloremque earum? Laborum et aliquid ut animi vel sequi
+            doloremque ad perferendis, quod cupiditate a. Voluptatem ipsam placeat
+            distinctio reprehenderit illum est aperiam provident? Cumque placeat
+            quasi vel illo assumenda maiores repellat magnam, omnis tempore nemo
+            perspiciatis esse ad totam illum praesentium numquam quam dolorum ea
+            eligendi. Ducimus, magnam accusantium aut natus sit beatae
+            necessitatibus accusamus deserunt temporibus assumenda iusto autem
+            placeat minima, facere iure doloribus ex quod nesciunt. Dolorem
+            accusamus, fugit repellendus, nostrum, fuga architecto obcaecati
+            asperiores ab nam iure delectus impedit. Recusandae, dicta minus
+            incidunt excepturi aut omnis? Fugit, saepe, fuga enim nihil quisquam
+            tempora tempore repellendus, vitae voluptas id molestias illo. Tempore
+            inventore quae, blanditiis, cumque odio optio eum ea ut iusto autem
+            doloribus officiis, voluptates fugit amet nemo libero accusantium a. Est
+            laudantium officiis, porro molestias, velit ipsam repellat deleniti
+            aliquid nisi facilis aspernatur. Eligendi eum deserunt laboriosam maxime
+            ex nostrum delectus inventore fugiat dicta! Itaque officia ducimus velit
+            consectetur similique nesciunt aspernatur iure in perferendis labore
+            aliquam suscipit maxime placeat molestiae ea natus animi odio,
+            praesentium reprehenderit nam nihil tempora! Consectetur totam doloribus
+            eligendi cum suscipit perferendis sit odit exercitationem quas beatae.
+        </p>
+      </div>
 
       <div>
         <nav>
