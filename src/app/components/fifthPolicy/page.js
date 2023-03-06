@@ -1,14 +1,36 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect,useContext,useRef } from "react";
 
 import { Card } from "primereact/card";
 import { Slider } from "primereact/slider";
 import { InputText } from "primereact/inputtext";
 
+import { ValuesContext } from "@/app/ValuesContext";
+
 const FifthPolicy = () => {
   const [value, setValue] = useState(0);
   const [spousevalue, setSpouseValue] = useState(0);
   const [childvalue, setChildValue] = useState(0);
+
+  const { valueFive, setValueFive } = useContext(ValuesContext);
+
+  
+  const totalRef = useRef(0); 
+  
+  const handleChange = () => {
+    console.log('value is changing comp 5')
+    console.log(totalRef.current.innerText)
+    setValueFive( 
+  
+      totalRef.current.innerText
+    );
+  };
+  
+  
+  useEffect(() => {
+    handleChange()
+  
+  },[handleChange]);
 
   const yourPremium = (value) => {
     return Number(((value * 0.0158) / 100).toFixed(2));
@@ -114,14 +136,17 @@ const FifthPolicy = () => {
           </>
         )}
         {/* total */}
+        <p>Value five: {valueFive}</p>
         <p className="font-semibold text-right my-2 text-3xl">
           {/* Total: ${ yourPremium(value * 10000)} */}
-          Total:{" "}
-          {`${
-            (yourPremium(value * 5000) +
-            yourPremium(spousevalue * 10000) +
-            yourPremium(childvalue * 2000)).toFixed(2)
-          }`}
+          Total:{" "}$
+          <span ref={totalRef}>
+            {`${
+              (yourPremium(value * 5000) +
+              yourPremium(spousevalue * 10000) +
+              yourPremium(childvalue * 2000)).toFixed(2)
+            }`}
+          </span>
         </p>
       </Card>
     </div>

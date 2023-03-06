@@ -1,7 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { Card } from "primereact/card";
 import { Dropdown } from "primereact/dropdown";
+
+import { ValuesContext } from "@/app/ValuesContext";
+
 
 const FourthPolicy = () => {
   const [options, setOptions] = useState([
@@ -14,16 +17,33 @@ const FourthPolicy = () => {
     { label: "Family", value: "Family" },
   ]);
   const [selectedOption, setSelectedOption] = useState("");
-  // const [value, setValue] = useState(0);
+  const { valueFour, setValueFour } = useContext(ValuesContext);
+
+  const totalRef = useRef(0);
+
+  
+const handleChange = () => {
+  console.log('value is changing comp 4')
+  console.log(totalRef.current.innerText)
+  setValueFour( 
+
+    totalRef.current.innerText
+  );
+};
+
+
+useEffect(() => {
+  handleChange()
+
+},[handleChange]);
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.value);
   };
 
-  console.log("g", selectedOption);
 
   const yourPremium = (value) => {
-    return (((value * 0.0158)).toFixed(2));
+    return (value * 0.0158).toFixed(2);
   };
 
   return (
@@ -64,7 +84,6 @@ const FourthPolicy = () => {
               <p> Option 2</p>
             </div>
             <div className="col-3">
-              
               <p className="font-semibold text-right my-2 text-xl">
                 {selectedOption === "" && yourPremium(0.0)}
               </p>
@@ -82,13 +101,19 @@ const FourthPolicy = () => {
           </div>
         </div>
         {/* total */}
+        <p>Value four: {valueFour}</p>
         <p className="font-semibold text-right my-2 text-3xl">
           Total: $
-          {selectedOption === "" && yourPremium(0.0)}
-          {selectedOption === "Single" && yourPremium(10000)}
-          {selectedOption === "Couple (or Member + 1 dependent child)" &&
-            yourPremium(15000)}
-          {selectedOption === "Family" && yourPremium(20000)}
+          
+          <span ref={totalRef}>
+
+            {selectedOption === "" && yourPremium(0.0)}
+            {selectedOption === "Single" && yourPremium(10000)}
+            {selectedOption === "Couple (or Member + 1 dependent child)" &&
+              yourPremium(15000)}
+            {selectedOption === "Family" && yourPremium(20000)}
+
+          </span>
         </p>
       </Card>
     </div>

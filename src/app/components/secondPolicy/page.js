@@ -3,8 +3,7 @@ import { Slider } from "primereact/slider";
 import { InputText } from "primereact/inputtext";
 import { RadioButton } from "primereact/radiobutton";
 import { Card } from "primereact/card";
-
-import { NumberContext } from "@/app/NumberContext";
+import { ValuesContext } from "@/app/ValuesContext";
 
 
 const SecondPolicy = () => {
@@ -13,7 +12,14 @@ const SecondPolicy = () => {
   const [spouseValue, setSpouseValue] = useState(0);
   const [child, setChild] = useState("");
 
-  const { addNumber } = useContext(NumberContext);
+  const { valueTwo, setValueTwo } = useContext(ValuesContext);
+
+
+
+  const handleChange = () => {
+    console.log('value is changing comp 2')
+    setValueTwo( total());
+  };
 
 
   const yourPremium = (value) => {
@@ -33,11 +39,14 @@ const SecondPolicy = () => {
 
   useEffect(() => {
     total();
-  },[]);
+    handleChange()
 
-  useEffect(() => {
-    addNumber(2);
-  }, []);
+  },[handleChange]);
+
+  // const handleClick = () => {
+  //   setValueOne(8);
+  // };
+ 
   return (
     <div className="card m-8">
       <Card title="TERM LIFE INSURANCE">
@@ -155,6 +164,10 @@ const SecondPolicy = () => {
         <p className="font-semibold text-right my-2 text-3xl">
           Total: ${total()}
         </p>
+
+        <p>Value two: {valueTwo}</p>
+      
+      {/* <button onClick={handleClick}>Set Value One</button> */}
       </Card>
     </div>
   );

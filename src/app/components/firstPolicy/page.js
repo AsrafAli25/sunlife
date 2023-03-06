@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState,useEffect,useContext } from "react";
+import React, { useState,useEffect,useContext,useRef } from "react";
 import { Card } from "primereact/card";
 import { Dropdown } from "primereact/dropdown";
-import { NumberContext } from "@/app/NumberContext";
+
+import { ValuesContext } from "@/app/ValuesContext";
+
 
 const FirstPolicy = () => {
   const [options, setOptions] = useState([
@@ -17,12 +19,24 @@ const FirstPolicy = () => {
   ]);
   const [selectedOption, setSelectedOption] = useState("None");
 
+  const { valueOne, setValueOne } = useContext(ValuesContext);
 
-  const { addNumber } = useContext(NumberContext);
+  const countRef = useRef(0); 
 
+  const handleChange = () => {
+    console.log('value is changing comp 1')
+    console.log(countRef.current.innerText)
+    setValueOne( 
+
+      countRef.current.innerText
+    );
+  };
+
+  
   useEffect(() => {
-    addNumber(3);
-  }, []);
+    handleChange()
+
+  },[handleChange]);
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.value);
@@ -52,12 +66,11 @@ const FirstPolicy = () => {
               />
             </div>
             <div className="col-4 pr-0">
-              <p className="font-semibold text-right my-2 text-xl">
-                {selectedOption === "None" && "$0.00"}
-                {selectedOption === "Single" && "$86.25"}
-                {selectedOption === "Couple (or Member + 1 dependent child)" &&
-                  "$141.58"}
-                {selectedOption === "Family" && "$183.41"}
+              <p  className="font-semibold text-right my-2 text-xl">
+                {selectedOption === "None" && `$${0.00}`}
+                {selectedOption === "Single" && `$${86.25}`}
+                {selectedOption === "Couple (or Member + 1 dependent child)" && `$${141.58}`}
+                {selectedOption === "Family" && `$${183.41}`}
               </p>
             </div>
           </div>
@@ -141,9 +154,10 @@ const FirstPolicy = () => {
           </main>
         )}
         {/* total */}
+        <p>Value One: {valueOne}</p>
         <p className="font-semibold text-right my-2 text-3xl">
           Total: $
-          <span className="font-semibold text-right my-2 text-3xl ml-2">
+          <span className="font-semibold text-right my-2 text-3xl ml-2" ref={countRef}>
             {selectedOption === "None" && 0.00}
             {selectedOption === "Single" && 86.25}
             {selectedOption === "Couple (or Member + 1 dependent child)" &&

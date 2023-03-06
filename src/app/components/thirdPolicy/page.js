@@ -1,10 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState,useEffect,useContext,useRef } from "react";
 import { Card } from "primereact/card";
 import { Dropdown } from "primereact/dropdown";
 import { Slider } from "primereact/slider";
 import { InputText } from "primereact/inputtext";
+
+import { ValuesContext } from "@/app/ValuesContext";
+
+
 
 const ThirdPolicy = () => {
   const [value, setValue] = useState(0);
@@ -16,12 +20,30 @@ const ThirdPolicy = () => {
     },
   ]);
   const [selectedOption, setSelectedOption] = useState("Single");
+  const { valueThree, setValueThree } = useContext(ValuesContext);
+
+  
+const totalRef = useRef(0); 
+
+const handleChange = () => {
+  console.log('value is changing comp 3')
+  console.log(totalRef.current.innerText)
+  setValueThree( 
+
+    totalRef.current.innerText
+  );
+};
+
+
+useEffect(() => {
+  handleChange()
+
+},[handleChange]);
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.value);
   };
 
-  console.log("g", selectedOption);
 
   const yourPremium = (value) => {
     return Number(((value * 0.0158) / 100).toFixed(2));
@@ -84,11 +106,15 @@ const ThirdPolicy = () => {
           </div>
         </div>
         {/* total */}
-        <p className="font-semibold text-right my-2 text-3xl">
+        <p>Value three: {valueThree}</p>
+        <p className="font-semibold text-right my-2 text-3xl" >
           Total: $
-          {selectedOption === "Couple, Member + 1 or Family"
-            ? yourPremium(value * 10000)
-            : yourPremium(value * 5000)}
+
+          <span ref={totalRef}>
+            {selectedOption === "Couple, Member + 1 or Family"
+              ? yourPremium(value * 10000)
+              : yourPremium(value * 5000)}
+          </span>
         </p>
       </Card>
     </div>
