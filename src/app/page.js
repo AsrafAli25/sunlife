@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 // prime react imports
 import { TabView, TabPanel } from "primereact/tabview";
@@ -27,6 +27,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import i18n from "./i18n";
 
+
 // translation functions
 i18n.init({
   lng: "en",
@@ -44,6 +45,9 @@ const MultiStepForm = () => {
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedDropdownOption, setSelectedDropdownOption] = useState(null);
+
+  const genderYesRef= useRef()
+
 
   // for spouse
   const [spouseVisibility, setspouseVisibility] = useState(false);
@@ -74,8 +78,8 @@ const MultiStepForm = () => {
     gender: Yup.string().required("Gender is required"),
     month: Yup.string().required("Month is required"),
     year: Yup.string()
-    .required("Year is required")
-    .min(1990, "You must have been born in 1990 or later."),
+      .required("Year is required"),
+      // .min(1990, "You must have been born in 1990 or later."),
     // .max(1995, "You must have been born in 1995 or earlier."),
     smoke: Yup.string().required("Select an option"),
     spouse: Yup.string().required("Spouse is required"),
@@ -115,6 +119,16 @@ const MultiStepForm = () => {
     { label: 1988, value: 1988 },
   ];
 
+  // const openSpouse = ()=>{
+  //   console.log('run')
+  //   setspouseVisibility(true);
+  //   console.log(genderYesRef.current === 'undefined' && genderYesRef.current.value==='yes')
+
+  // }
+  // const closeSpouse = ()=>{
+  //   console.log('run')
+  //   setspouseVisibility(false);
+  // }
   return (
     <main>
       <TabView
@@ -327,9 +341,13 @@ const MultiStepForm = () => {
                                     inputId="yes"
                                     name="spouse"
                                     value="yes"
-                                    onChange={handleChange}
+                                    onChange={
+                                      handleChange
+                                      // openSpouse();
+                                    }
                                     onBlur={handleBlur}
                                     checked={values.spouse === "yes"}
+                                    ref={genderYesRef}
                                   />
                                   <label className="ml-2" htmlFor="yes">
                                     Yes
@@ -341,7 +359,10 @@ const MultiStepForm = () => {
                                     inputId="no"
                                     name="spouse"
                                     value="no"
-                                    onChange={handleChange}
+                                    onChange={
+                                      handleChange
+                                      // closeSpouse();
+                                    }
                                     onBlur={handleBlur}
                                     checked={values.spouse === "no"}
                                   />
@@ -420,117 +441,132 @@ const MultiStepForm = () => {
                         </div>
                         <div className="col p-6 pl-0">
                           <div className="wrap">
-                            <h2 className="mb-5">TELL US ABOUT YOUR SPOUSE</h2>
+                          <h2 className="mb-5">TELL US ABOUT YOUR SPOUSE</h2>
 
-                            <div className="flex mb-4">
-                              <div className="col-6">
-                                <p className="primaryText text-xl">
-                                  Spouse's gender:
-                                </p>
-                              </div>
-                              <div className="col-6">
-                                <div className="flex flex-wrap gap-3">
-                                  <div className="flex align-items-center">
-                                    <RadioButton
-                                      inputId="ingredient1"
-                                      name="pizza"
-                                      value="Cheese"
-                                      onChange={(e) => setGender(e.value)}
-                                      checked={gender === "Cheese"}
-                                    />
-                                    <label
-                                      htmlFor="ingredient1"
-                                      className="ml-2"
-                                    >
-                                      Male
-                                    </label>
-                                  </div>
-                                  <div className="flex align-items-center">
-                                    <RadioButton
-                                      inputId="ingredient2"
-                                      name="pizza"
-                                      value="Mushroom"
-                                      onChange={(e) => setGender(e.value)}
-                                      checked={gender === "Mushroom"}
-                                    />
-                                    <label
-                                      htmlFor="ingredient2"
-                                      className="ml-2"
-                                    >
-                                      Female
-                                    </label>
-                                  </div>
+                          <div className="flex mb-4">
+                            <div className="col-6">
+                              <p className="primaryText text-xl">
+                              Spouse's gender:
+                              </p>
+                            </div>
+                            <div className="col-6">
+                              <div className="flex flex-wrap gap-3">
+                                <div className="flex align-items-center">
+                                  <Field
+                                    as={RadioButton}
+                                    inputId="male"
+                                    name="gender"
+                                    value="male"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    checked={values.gender === "male"}
+                                  />
+                                  <label className="ml-2" htmlFor="male">
+                                    Male
+                                  </label>
+                                </div>
+                                <div className="flex align-items-center">
+                                  <Field
+                                    as={RadioButton}
+                                    inputId="female"
+                                    name="gender"
+                                    value="female"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    checked={values.gender === "female"}
+                                  />
+                                  <label className="ml-2" htmlFor="female">
+                                    Female
+                                  </label>
                                 </div>
                               </div>
+                              <p className="p-error font-semibold  pt-1">
+                                <ErrorMessage name="gender" />
+                              </p>
                             </div>
+                          </div>
 
-                            <div className="flex mb-4">
-                              <div className="col-6">
-                                <p className="primaryText text-xl">
-                                  Spouse's date of birth:
-                                </p>
-                              </div>
-                              <div className="col-6">
+                          <div className="flex mb-4">
+                            <div className="col-6">
+                              <p className="primaryText text-xl">
+                              Spouse's  date of birth:
+                              </p>
+                            </div>
+                            <div className="col-6 flex w-5 pr-0">
+                              <div className="w-full">
                                 <Dropdown
-                                  value={month}
-                                  onChange={(e) => setMonth(e.value)}
+                                  value={values.month}
                                   options={monthName}
-                                  optionLabel="name"
-                                  placeholder="Select a Month"
-                                  style={{ width: "38%", marginRight: "2%" }}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  name="month"
+                                  placeholder="Select a month"
+                                  style={{ width: "90%", marginRight: "1%" }}
                                 />
-                                <Dropdown
-                                  value={year}
-                                  onChange={(e) => setYear(e.value)}
-                                  options={yearName}
-                                  optionLabel="name"
-                                  placeholder="Select a Year"
-                                  style={{ width: "38%", marginLeft: "2%" }}
-                                />
-                              </div>
-                            </div>
-
-                            <div className="flex mb-4">
-                              <div className="col-6">
-                                <p className="primaryText text-xl">
-                                  Does your spouse smoke?{" "}
+                                <p className="p-error font-semibold  pt-1">
+                                  <ErrorMessage name="month" />
                                 </p>
                               </div>
-                              <div className="col-6">
-                                <div className="flex flex-wrap gap-3">
-                                  <div className="flex align-items-center">
-                                    <RadioButton
-                                      inputId="ingredient1"
-                                      name="pizza"
-                                      value="Cheese"
-                                      onChange={(e) => setSmoke(e.value)}
-                                      checked={smoke === "Cheese"}
-                                    />
-                                    <label
-                                      htmlFor="ingredient1"
-                                      className="ml-2"
-                                    >
-                                      Yes
-                                    </label>
-                                  </div>
-                                  <div className="flex align-items-center">
-                                    <RadioButton
-                                      inputId="ingredient2"
-                                      name="pizza"
-                                      value="Mushroom"
-                                      onChange={(e) => setSmoke(e.value)}
-                                      checked={smoke === "Mushroom"}
-                                    />
-                                    <label
-                                      htmlFor="ingredient2"
-                                      className="ml-2"
-                                    >
-                                      No
-                                    </label>
-                                  </div>
-                                </div>
+                              <div className="w-full">
+                                <Dropdown
+                                  value={values.year}
+                                  options={yearName}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  name="year"
+                                  placeholder="Select a year"
+                                  style={{ width: "90%", marginLeft: "1%" }}
+                                />
+                                <p className="p-error font-semibold  pt-1">
+                                  <ErrorMessage name="year" />
+                                </p>
                               </div>
                             </div>
+                          </div>
+
+                          <div className="flex mb-4">
+                            <div className="col-6">
+                              <p className="primaryText text-xl">
+                              Does your spouse smoke?
+                              </p>
+                            </div>
+
+                            <div className="col-6">
+                              <div className="flex flex-wrap gap-3">
+                                <div className="flex align-items-center">
+                                  <Field
+                                    as={RadioButton}
+                                    inputId="yes"
+                                    name="child"
+                                    value="yes"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    checked={values.child === "yes"}
+                                  />
+                                  <label className="ml-2" htmlFor="yes">
+                                    Yes
+                                  </label>
+                                </div>
+                                <div className="flex align-items-center">
+                                  <Field
+                                    as={RadioButton}
+                                    inputId="no"
+                                    name="child"
+                                    value="no"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    checked={values.child === "no"}
+                                  />
+                                  <label className="ml-2" htmlFor="no">
+                                    No
+                                  </label>
+                                </div>
+                              </div>
+                              <p className="p-error font-semibold  pt-1">
+                                <ErrorMessage name="child" />
+                              </p>
+                            </div>
+                          </div>
                           </div>
                         </div>
                       </div>
@@ -618,7 +654,6 @@ const MultiStepForm = () => {
       </TabView>
 
       {/* demo text */}
-
       <div className="m-8">
         <h1>{t("welcome")}</h1>
         <h1>{t("about")}</h1>

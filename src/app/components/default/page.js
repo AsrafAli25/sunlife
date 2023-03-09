@@ -18,8 +18,6 @@ const Default = () => {
   const [continueBtnVisible, setContinueBtnVisible] = useState(true);
   const [stepsVisibility, setStepsVisibility] = useState(false);
 
-
-
   // schema
   const validationSchema = Yup.object().shape({
     gender: Yup.string().required("Gender is required"),
@@ -57,7 +55,6 @@ const Default = () => {
     { label: 1993, value: 1993 },
   ];
 
-
   // go to top func
   const goToTop = () => {
     window.scrollTo({
@@ -68,17 +65,15 @@ const Default = () => {
     setContinueBtnVisible(false);
   };
 
-
-
   return (
     <>
       {/* default screen */}
       <Formik
         initialValues={{
           gender: "",
-          smoke:"",
-          spouse:"",
-          child:"",
+          smoke: "",
+          spouse: "",
+          child: "",
           country: null,
           month: null,
           year: null,
@@ -88,8 +83,8 @@ const Default = () => {
           // Handle form submission here
           console.log("form values", values);
           values.spouse === "yes"
-          ? setspouseVisibility(true)
-          : setspouseVisibility(false);
+            ? setspouseVisibility(true)
+            : setspouseVisibility(false);
         }}
       >
         {(formik) => (
@@ -283,7 +278,7 @@ const Default = () => {
                           Do you have a spouse?
                         </p>
                       </div>
-                 
+
                       <div className="col-6">
                         <div className="flex flex-wrap gap-3">
                           <div className="flex align-items-center">
@@ -332,7 +327,6 @@ const Default = () => {
                           Do you have dependent child(ren)?
                         </p>
                       </div>
-                     
 
                       <div className="col-6">
                         <div className="flex flex-wrap gap-3">
@@ -497,32 +491,11 @@ const Default = () => {
                           </div>
                         </div>
                       </div>
-                      
                     </div>
                   </div>
                 </div>
               )}
             </div>
-
-            {/* submit button */}
-            {/* <div className="card flex justify-content-center ">
-              <Button
-                label="submit"
-                // onClick={goToTop}
-                // style={{ display: !continueBtnVisible ? "none" : "" }}
-                type="submit"
-              />
-            </div> */}
-
-            {/* submit button */}
-            {/* <div className="card flex justify-content-center mt-4">
-              <Button
-                label="Next"
-                onClick={goToTop}
-                // style={{ display: !continueBtnVisible ? "none" : "" }}
-                type="submit"
-              />
-            </div> */}
           </Form>
         )}
       </Formik>

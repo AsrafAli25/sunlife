@@ -1,12 +1,11 @@
 "use client";
-import React, { useState,useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Card } from "primereact/card";
 import { Slider } from "primereact/slider";
 import { InputText } from "primereact/inputtext";
 import { RadioButton } from "primereact/radiobutton";
 
 import { ValuesContext } from "@/app/ValuesContext";
-
 
 const SixthPolicy = () => {
   const [value, setValue] = useState(0);
@@ -16,14 +15,9 @@ const SixthPolicy = () => {
   const { valueSix, setValueSix } = useContext(ValuesContext);
 
 
-  // const yourPremium = (value) => {
-  //   return Number(((value * 0.0158) / 100).toFixed(2));
-  // };
-
-  
   const handleChange = () => {
-    console.log('value is changing comp 6')
-    setValueSix( total());
+    console.log("value is changing comp 6");
+    setValueSix(total());
   };
 
   const spousePremium = (value) => {
@@ -33,15 +27,16 @@ const SixthPolicy = () => {
   const total = () => {
     return (
       // yourPremium(value * 5000) +
-      spousePremium(spouseValue * 5000) +
-      (child === "yes" ? 6.60 : 0)
-    ).toFixed(2);
+      (spousePremium(spouseValue * 5000) + (child === "yes" ? 6.6 : 0)).toFixed(
+        2
+      )
+    );
   };
 
   useEffect(() => {
     total();
-    handleChange()
-  },[handleChange]);
+    handleChange();
+  }, [handleChange]);
 
   return (
     <div className="card m-8">
@@ -179,13 +174,7 @@ const SixthPolicy = () => {
         {/* total */}
         <p>Value six: {valueSix}</p>
         <p className="font-semibold text-right my-2 text-3xl">
-          {/* Total:{" "}
-          {  
-            `${
-              yourPremium(value * 5000)
-             + spousePremium(spouseValue * 5000)
-          }`} */}
-            Total: ${total()}
+          Total: ${total()}
         </p>
       </Card>
     </div>

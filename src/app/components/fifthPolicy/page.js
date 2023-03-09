@@ -1,5 +1,5 @@
 "use client";
-import React, { useState,useEffect,useContext,useRef } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { Card } from "primereact/card";
 import { Slider } from "primereact/slider";
@@ -14,23 +14,17 @@ const FifthPolicy = () => {
 
   const { valueFive, setValueFive } = useContext(ValuesContext);
 
-  
-  const totalRef = useRef(0); 
-  
+  const totalRef = useRef(0);
+
   const handleChange = () => {
-    console.log('value is changing comp 5')
-    console.log(totalRef.current.innerText)
-    setValueFive( 
-  
-      totalRef.current.innerText
-    );
+    console.log("value is changing comp 5");
+    console.log(totalRef.current.innerText);
+    setValueFive(totalRef.current.innerText);
   };
-  
-  
+
   useEffect(() => {
-    handleChange()
-  
-  },[handleChange]);
+    handleChange();
+  }, [handleChange]);
 
   const yourPremium = (value) => {
     return Number(((value * 0.0158) / 100).toFixed(2));
@@ -93,11 +87,22 @@ const FifthPolicy = () => {
                       className="w-3"
                     />
                   </div>
+                  {spousevalue > value && (
+                    <p className="p-error pt-2 w-6 font-semibold">
+                      Spouse coverage cannot exceed the member's coverage
+                    </p>
+                  )}
                 </div>
                 <div className="col-3">
-                  <p className="font-semibold text-right my-2 text-xl">
-                    ${yourPremium(spousevalue * 10000)}
-                  </p>
+                  {spousevalue > value ? (
+                    <p className="font-semibold text-right my-2 text-xl">
+                      $ <span>0.00</span>
+                    </p>
+                  ) : (
+                    <p className="font-semibold text-right my-2 text-xl">
+                      ${yourPremium(spousevalue * 10000)}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -139,13 +144,13 @@ const FifthPolicy = () => {
         <p>Value five: {valueFive}</p>
         <p className="font-semibold text-right my-2 text-3xl">
           {/* Total: ${ yourPremium(value * 10000)} */}
-          Total:{" "}$
+          Total: $
           <span ref={totalRef}>
-            {`${
-              (yourPremium(value * 5000) +
+            {`${(
+              yourPremium(value * 5000) +
               yourPremium(spousevalue * 10000) +
-              yourPremium(childvalue * 2000)).toFixed(2)
-            }`}
+              yourPremium(childvalue * 2000)
+            ).toFixed(2)}`}
           </span>
         </p>
       </Card>

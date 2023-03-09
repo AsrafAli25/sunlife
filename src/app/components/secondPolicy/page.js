@@ -1,10 +1,9 @@
-import React, { useEffect, useState,useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Slider } from "primereact/slider";
 import { InputText } from "primereact/inputtext";
 import { RadioButton } from "primereact/radiobutton";
 import { Card } from "primereact/card";
 import { ValuesContext } from "@/app/ValuesContext";
-
 
 const SecondPolicy = () => {
   // slider value
@@ -14,13 +13,10 @@ const SecondPolicy = () => {
 
   const { valueTwo, setValueTwo } = useContext(ValuesContext);
 
-
-
   const handleChange = () => {
-    console.log('value is changing comp 2')
-    setValueTwo( total());
+    console.log("value is changing comp 2");
+    setValueTwo(total());
   };
-
 
   const yourPremium = (value) => {
     return Number(((value * 0.0158) / 100).toFixed(2));
@@ -39,14 +35,10 @@ const SecondPolicy = () => {
 
   useEffect(() => {
     total();
-    handleChange()
+    handleChange();
+  }, [handleChange]);
 
-  },[handleChange]);
 
-  // const handleClick = () => {
-  //   setValueOne(8);
-  // };
- 
   return (
     <div className="card m-8">
       <Card title="TERM LIFE INSURANCE">
@@ -104,13 +96,31 @@ const SecondPolicy = () => {
                   className="w-3"
                 />
               </div>
+              {
+            spouseValue > value && (
+              <p className="p-error pt-2 w-6 font-semibold">
+              Spouse coverage cannot exceed the member's coverage
+              </p>
+            )
+          }
             </div>
             <div className="col-3">
-              <p className="font-semibold text-right my-2 text-xl">
-                ${spousePremium(spouseValue * 5000)}
-              </p>
+              {
+                spouseValue > value ? (
+                  <p className="font-semibold text-right my-2 text-xl">
+                  $ <span>0.00</span>
+                </p>
+                ) : (
+                  <p className="font-semibold text-right my-2 text-xl">
+                  ${spousePremium(spouseValue * 5000)}
+                </p>
+                )
+              }
+             
             </div>
           </div>
+         
+        
         </div>
         <div className="flex my-4">
           <div className="col-4">
@@ -166,8 +176,8 @@ const SecondPolicy = () => {
         </p>
 
         <p>Value two: {valueTwo}</p>
-      
-      {/* <button onClick={handleClick}>Set Value One</button> */}
+
+        {/* <button onClick={handleClick}>Set Value One</button> */}
       </Card>
     </div>
   );

@@ -32,4 +32,6 @@ a {
   text-decoration: none;
 }
 
-
+.p-tabview-nav-link{
+  pointer-events: none;
+}

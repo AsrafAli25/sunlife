@@ -3,6 +3,7 @@
 
 
 import './globals.css'
+import { BrowserRouter } from 'react-router-dom';
 
 // theme
 import 'primereact/resources/themes/bootstrap4-light-blue/theme.css'
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
       <head />
       <body>
         <>
+        <BrowserRouter>
           <ValuesProvider>
             <I18nextProvider i18n={i18n}>
               <Header/>
@@ -38,6 +40,8 @@ export default function RootLayout({ children }) {
               <Footer/>
             </I18nextProvider>
           </ValuesProvider>
+        
+        </BrowserRouter>
         </>
       </body>
     </html>
