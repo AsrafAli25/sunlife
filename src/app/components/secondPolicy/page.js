@@ -7,9 +7,24 @@ import { ValuesContext } from "@/app/ValuesContext";
 
 const SecondPolicy = () => {
   // slider value
-  const [value, setValue] = useState(0);
-  const [spouseValue, setSpouseValue] = useState(0);
-  const [child, setChild] = useState("");
+  const [value, setValue] = useState(
+    ()=>{
+      const storedValue = window.localStorage.getItem('value');
+      return storedValue !== null ? parseInt(storedValue) : 0;
+    }
+  );
+  const [spouseValue, setSpouseValue] = useState(
+    ()=>{
+      const storedValue = window.localStorage.getItem('spouseValue');
+      return storedValue !== null ? parseInt(storedValue) : 0;
+    }
+  );
+  const [child, setChild] = useState(
+    ()=>{
+      const storedValue = window.localStorage.getItem('child');
+      return storedValue !== null ? storedValue : "";
+    }
+  );
 
   const { valueTwo, setValueTwo } = useContext(ValuesContext);
 
@@ -36,8 +51,10 @@ const SecondPolicy = () => {
   useEffect(() => {
     total();
     handleChange();
-  }, [handleChange]);
-
+    window.localStorage.setItem('value', value.toString());
+    window.localStorage.setItem('spouseValue', spouseValue.toString());
+    window.localStorage.setItem('child', child);
+  }, [handleChange, value,spouseValue,child]);
 
   return (
     <div className="card m-8">
@@ -96,31 +113,24 @@ const SecondPolicy = () => {
                   className="w-3"
                 />
               </div>
-              {
-            spouseValue > value && (
-              <p className="p-error pt-2 w-6 font-semibold">
-              Spouse coverage cannot exceed the member's coverage
-              </p>
-            )
-          }
+              {spouseValue > value && (
+                <p className="p-error pt-2 w-6 font-semibold">
+                  Spouse coverage cannot exceed the member's coverage
+                </p>
+              )}
             </div>
             <div className="col-3">
-              {
-                spouseValue > value ? (
-                  <p className="font-semibold text-right my-2 text-xl">
+              {spouseValue > value ? (
+                <p className="font-semibold text-right my-2 text-xl">
                   $ <span>0.00</span>
                 </p>
-                ) : (
-                  <p className="font-semibold text-right my-2 text-xl">
+              ) : (
+                <p className="font-semibold text-right my-2 text-xl">
                   ${spousePremium(spouseValue * 5000)}
                 </p>
-                )
-              }
-             
+              )}
             </div>
           </div>
-         
-        
         </div>
         <div className="flex my-4">
           <div className="col-4">

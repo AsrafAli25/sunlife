@@ -8,12 +8,26 @@ import { RadioButton } from "primereact/radiobutton";
 import { ValuesContext } from "@/app/ValuesContext";
 
 const SixthPolicy = () => {
-  const [value, setValue] = useState(0);
-  const [spouseValue, setSpouseValue] = useState(0);
-  const [child, setChild] = useState("");
+  const [value, setValue] = useState(
+    ()=>{
+      const storedValue = window.localStorage.getItem('value');
+      return storedValue !== null ? parseInt(storedValue) : 0;
+    }
+  );
+  const [spouseValue, setSpouseValue] = useState(
+    ()=>{
+      const storedValue = window.localStorage.getItem('spouseValue');
+      return storedValue !== null ? parseInt(storedValue) : 0;
+    }
+  );
+  const [child, setChild] = useState(
+    ()=>{
+      const storedValue = window.localStorage.getItem('child');
+      return storedValue !== null ? storedValue : "";
+    }
+  );
 
   const { valueSix, setValueSix } = useContext(ValuesContext);
-
 
   const handleChange = () => {
     console.log("value is changing comp 6");
@@ -36,7 +50,10 @@ const SixthPolicy = () => {
   useEffect(() => {
     total();
     handleChange();
-  }, [handleChange]);
+    window.localStorage.setItem('value', value.toString());
+    window.localStorage.setItem('spouseValue', spouseValue.toString());
+    window.localStorage.setItem('child', child);
+  }, [handleChange, value,spouseValue,child]);
 
   return (
     <div className="card m-8">

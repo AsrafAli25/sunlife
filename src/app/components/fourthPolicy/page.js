@@ -5,7 +5,6 @@ import { Dropdown } from "primereact/dropdown";
 
 import { ValuesContext } from "@/app/ValuesContext";
 
-
 const FourthPolicy = () => {
   const [options, setOptions] = useState([
     // { label: "None", value: "None" },
@@ -16,31 +15,30 @@ const FourthPolicy = () => {
     },
     { label: "Family", value: "Family" },
   ]);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState(
+    () => {
+      const storedValue = window.localStorage.getItem("selectedOption");
+      return storedValue !== null ? storedValue : "";
+      }
+  );
   const { valueFour, setValueFour } = useContext(ValuesContext);
 
   const totalRef = useRef(0);
 
-  
-const handleChange = () => {
-  console.log('value is changing comp 4')
-  console.log(totalRef.current.innerText)
-  setValueFour( 
+  const handleChange = () => {
+    console.log("value is changing comp 4");
+    console.log(totalRef.current.innerText);
+    setValueFour(totalRef.current.innerText);
+  };
 
-    totalRef.current.innerText
-  );
-};
-
-
-useEffect(() => {
-  handleChange()
-
-},[handleChange]);
+  useEffect(() => {
+    handleChange();
+    window.localStorage.setItem("selectedOption", selectedOption);
+  }, [handleChange,selectedOption]);
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.value);
   };
-
 
   const yourPremium = (value) => {
     return (value * 0.0158).toFixed(2);
@@ -104,15 +102,12 @@ useEffect(() => {
         <p>Value four: {valueFour}</p>
         <p className="font-semibold text-right my-2 text-3xl">
           Total: $
-          
           <span ref={totalRef}>
-
             {selectedOption === "" && yourPremium(0.0)}
             {selectedOption === "Single" && yourPremium(10000)}
             {selectedOption === "Couple (or Member + 1 dependent child)" &&
               yourPremium(15000)}
             {selectedOption === "Family" && yourPremium(20000)}
-
           </span>
         </p>
       </Card>

@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState,useEffect,useContext,useRef } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Card } from "primereact/card";
 import { Dropdown } from "primereact/dropdown";
 
 import { ValuesContext } from "@/app/ValuesContext";
-
 
 const FirstPolicy = () => {
   const [options, setOptions] = useState([
@@ -17,26 +16,38 @@ const FirstPolicy = () => {
     },
     { label: "Family", value: "Family" },
   ]);
-  const [selectedOption, setSelectedOption] = useState("None");
+  const [selectedOption, setSelectedOption] = useState(
+    () => {
+    const storedValue = window.localStorage.getItem("selectedOption");
+    return storedValue !== null ? storedValue : "None";
+    }
+  );
 
   const { valueOne, setValueOne } = useContext(ValuesContext);
 
-  const countRef = useRef(0); 
+  const countRef = useRef(0);
 
   const handleChange = () => {
-    console.log('value is changing comp 1')
-    console.log(countRef.current.innerText)
-    setValueOne( 
-
-      countRef.current.innerText
+    console.log("value is changing comp 1");
+    console.log(countRef.current.innerText);
+    setValueOne(
+      countRef.current.innerText,
     );
   };
 
-  
   useEffect(() => {
-    handleChange()
+    handleChange();
+    window.localStorage.setItem("selectedOption", selectedOption);
+    console.log("comp rerender");
+  }, [selectedOption, handleChange]);
 
-  },[handleChange]);
+  // useEffect(() => {
+  //   // Clear local storage when the page is refreshed
+  //   window.onbeforeunload = () => {
+  //     window.localStorage.setItem('selectedOption', null);
+  //     console.log('so', selectedOption)
+  //   };
+  // }, []);
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.value);
@@ -66,17 +77,18 @@ const FirstPolicy = () => {
               />
             </div>
             <div className="col-4 pr-0">
-              <p  className="font-semibold text-right my-2 text-xl">
-                {selectedOption === "None" && `$${0.00}`}
+              <p className="font-semibold text-right my-2 text-xl">
+                {selectedOption === "None" && `$${0.0}`}
                 {selectedOption === "Single" && `$${86.25}`}
-                {selectedOption === "Couple (or Member + 1 dependent child)" && `$${141.58}`}
+                {selectedOption === "Couple (or Member + 1 dependent child)" &&
+                  `$${141.58}`}
                 {selectedOption === "Family" && `$${183.41}`}
               </p>
             </div>
           </div>
         </div>
         {/* body */}
-        {selectedOption !== "None" && selectedOption !== "" && (
+        {selectedOption !== "None" || selectedOption !== "" || selectedOption !== null && (
           <main>
             <p className="my-2">
               Monthly premiums include coverage for four products:
@@ -157,8 +169,11 @@ const FirstPolicy = () => {
         <p>Value One: {valueOne}</p>
         <p className="font-semibold text-right my-2 text-3xl">
           Total: $
-          <span className="font-semibold text-right my-2 text-3xl ml-2" ref={countRef}>
-            {selectedOption === "None" && 0.00}
+          <span
+            className="font-semibold text-right my-2 text-3xl ml-2"
+            ref={countRef}
+          >
+            {selectedOption === "None" && 0.0}
             {selectedOption === "Single" && 86.25}
             {selectedOption === "Couple (or Member + 1 dependent child)" &&
               141.58}

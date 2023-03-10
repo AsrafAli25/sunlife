@@ -8,9 +8,24 @@ import { InputText } from "primereact/inputtext";
 import { ValuesContext } from "@/app/ValuesContext";
 
 const FifthPolicy = () => {
-  const [value, setValue] = useState(0);
-  const [spousevalue, setSpouseValue] = useState(0);
-  const [childvalue, setChildValue] = useState(0);
+  const [value, setValue] = useState(
+    ()=>{
+      const storedValue = window.localStorage.getItem('value');
+      return storedValue !== null ? parseInt(storedValue) : 0;
+    }
+  );
+  const [spousevalue, setSpouseValue] = useState(
+    ()=>{
+      const storedValue = window.localStorage.getItem('spousevalue');
+      return storedValue !== null ? parseInt(storedValue) : 0;
+    }
+  );
+  const [childvalue, setChildValue] = useState(
+    ()=>{
+      const storedValue = window.localStorage.getItem('childvalue');
+      return storedValue !== null ? parseInt(storedValue) : 0;
+    }
+  );
 
   const { valueFive, setValueFive } = useContext(ValuesContext);
 
@@ -24,7 +39,10 @@ const FifthPolicy = () => {
 
   useEffect(() => {
     handleChange();
-  }, [handleChange]);
+    window.localStorage.setItem('value', value.toString());
+    window.localStorage.setItem('spousevalue', spousevalue.toString());
+    window.localStorage.setItem('childvalue', childvalue.toString());
+  }, [handleChange,value,spousevalue,childvalue]);
 
   const yourPremium = (value) => {
     return Number(((value * 0.0158) / 100).toFixed(2));

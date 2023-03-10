@@ -11,7 +11,12 @@ import { ValuesContext } from "@/app/ValuesContext";
 
 
 const ThirdPolicy = () => {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(
+    ()=>{
+      const storedValue = window.localStorage.getItem('value');
+      return storedValue !== null ? parseInt(storedValue) : 0;
+    }
+  );
   const [options, setOptions] = useState([
     { label: "Single", value: "Single" },
     {
@@ -19,7 +24,12 @@ const ThirdPolicy = () => {
       value: "Couple, Member + 1 or Family",
     },
   ]);
-  const [selectedOption, setSelectedOption] = useState("Single");
+  const [selectedOption, setSelectedOption] = useState(
+    () => {
+      const storedValue = window.localStorage.getItem("selectedOption");
+      return storedValue !== null ? storedValue : "Single";
+      }
+  );
   const { valueThree, setValueThree } = useContext(ValuesContext);
 
   
@@ -37,8 +47,9 @@ const handleChange = () => {
 
 useEffect(() => {
   handleChange()
-
-},[handleChange]);
+  window.localStorage.setItem("selectedOption", selectedOption);
+  window.localStorage.setItem('value', value.toString());
+},[handleChange,selectedOption,value]);
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.value);

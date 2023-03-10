@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
       <head />
       <body>
         <>
-        <BrowserRouter>
+  
           <ValuesProvider>
             <I18nextProvider i18n={i18n}>
               <Header/>
@@ -40,8 +40,7 @@ export default function RootLayout({ children }) {
               <Footer/>
             </I18nextProvider>
           </ValuesProvider>
-        
-        </BrowserRouter>
+
         </>
       </body>
     </html>

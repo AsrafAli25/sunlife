@@ -77,8 +77,9 @@ const MultiStepForm = () => {
     country: Yup.string().required("Country is required"),
     gender: Yup.string().required("Gender is required"),
     month: Yup.string().required("Month is required"),
-    year: Yup.string()
-      .required("Year is required"),
+    year: Yup.number()
+      .required("Year is required")
+      .max(new Date().getFullYear() - 18, "You must be 18 years or older"),
       // .min(1990, "You must have been born in 1990 or later."),
     // .max(1995, "You must have been born in 1995 or earlier."),
     smoke: Yup.string().required("Select an option"),
@@ -103,6 +104,16 @@ const MultiStepForm = () => {
   ];
 
   const yearName = [
+    { label: 2011, value: 2011 },
+    { label: 2010, value: 2010 },
+    { label: 2009, value: 2009 },
+    { label: 2008, value: 2008 },
+    { label: 2007, value: 2007 },
+    { label: 2006, value: 2006 },
+    { label: 2005, value: 2005 },
+    { label: 2004, value: 2004 },
+    { label: 2003, value: 2003 },
+    { label: 2002, value: 2002 },
     { label: 2001, value: 2001 },
     { label: 2000, value: 2000 },
     { label: 1999, value: 1999 },

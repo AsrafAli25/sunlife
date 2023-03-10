@@ -33,5 +33,5 @@ a {
 }
 
 .p-tabview-nav-link{
-  pointer-events: none;
+  /* pointer-events: none; */
 }
